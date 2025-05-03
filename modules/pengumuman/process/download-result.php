@@ -34,14 +34,14 @@ if(Request::isMethod('POST'))
         $template = str_replace($key, $value, $template);
     }
 
-    $template = str_replace(env('APP_URL') .'/storage/', dirname(__FILE__) . '\..\..\..\storage\media\\', $template);
+    $template = str_replace(env('APP_URL') .'/storage/', dirname(__FILE__) . '/../../../storage/media/', $template);
     
     $peserta->template_text = $template;
 
     $kop = getSetting('APP_KOP_SURAT');
     $kop = str_replace(env('APP_URL') .'/storage/', '', $kop);
 
-    $kop = dirname(__FILE__) . '\..\..\..\storage\media\\'.$kop;
+    $kop = dirname(__FILE__) . '/../../../storage/media/'.$kop;
 
     $content = view('pengumuman/views/download-result', [
         'periode' => $periode,

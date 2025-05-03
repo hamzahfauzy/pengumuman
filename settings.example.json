@@ -1,17 +1,86 @@
 {
-    "favicon": {
+    "APP_FAVICON": {
         "label": "Favicon",
         "type": "file",
-        "key": "APP_FAVICON"
+        "key": "APP_FAVICON",
+        "target": "db"
     },
-    "logo": {
+    "APP_LOGO": {
         "label": "Logo",
         "type": "file",
-        "key": "APP_LOGO"
+        "key": "APP_LOGO",
+        "target": "db"
     },
-    "sidebar_logo": {
+    "APP_SIDEBAR_LOGO": {
         "label": "Sidebar Logo",
         "type": "file",
-        "key": "APP_SIDEBAR_LOGO"
+        "key": "APP_SIDEBAR_LOGO",
+        "target": "db"
+    },
+    "APP_NAMA_SEKOLAH": {
+        "label": "Nama Sekolah",
+        "type": "text",
+        "key": "APP_NAMA_SEKOLAH",
+        "target": "db"
+    },
+    "APP_KECAMATAN": {
+        "label": "Kecamatan",
+        "type": "text",
+        "key": "APP_KECAMATAN",
+        "target": "db"
+    },
+    "APP_KABUPATEN": {
+        "label": "Kabupaten",
+        "type": "text",
+        "key": "APP_KABUPATEN",
+        "target": "db"
+    },
+    "APP_PROVINSI": {
+        "label": "Provinsi",
+        "type": "text",
+        "key": "APP_PROVINSI",
+        "target": "db"
+    },
+    "APP_KATA_SAMBUTAN": {
+        "label": "Kata Sambutan",
+        "type": "textarea",
+        "key": "APP_KATA_SAMBUTAN",
+        "target": "db"
+    },
+    "APP_KATA_KELULUSAN": {
+        "label": "Kata Kelulusan",
+        "type": "textarea",
+        "key": "APP_KATA_KELULUSAN",
+        "target": "db"
+    },
+    "APP_KATA_TIDAK_LULUS": {
+        "label": "Kata Tidak Lulus",
+        "type": "textarea",
+        "key": "APP_KATA_TIDAK_LULUS",
+        "target": "db"
+    },
+    "APP_WAKTU_PENGUMUMAN": {
+        "label": "Waktu Pengumuman",
+        "type": "datetime-local",
+        "key": "APP_WAKTU_PENGUMUMAN",
+        "target": "db"
+    },
+    "APP_TEMPLATE_SURAT": {
+        "label": "Template Surat",
+        "type": "file",
+        "key": "APP_TEMPLATE_SURAT",
+        "target": "db"
+    },
+    "APP_TEXT_TEMPLATE": {
+        "label": "Template Surat",
+        "type": "textarea",
+        "key": "APP_TEXT_TEMPLATE",
+        "target": "db"
+    },
+    "APP_KOP_SURAT": {
+        "label": "KOP Surat",
+        "type": "file",
+        "key": "APP_KOP_SURAT",
+        "target": "db"
     }
 }

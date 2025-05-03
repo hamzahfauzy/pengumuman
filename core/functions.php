@@ -632,6 +632,11 @@ function getSidebarLogo()
         return getSetting('application_sidebar_logo');
     }
 
+    if(getSetting('APP_SIDEBAR_LOGO'))
+    {
+        return getSetting('APP_SIDEBAR_LOGO');
+    }
+
     return env('APP_SIDEBAR_LOGO', asset('theme/assets/img/avatars/1.png"'));
 }
 
@@ -642,6 +647,11 @@ function getFavicon()
         return getSetting('application_favicon');
     }
 
+    if(getSetting('APP_FAVICON'))
+    {
+        return getSetting('APP_FAVICON');
+    }
+
     return env('APP_FAVICON', asset('theme/assets/images/favicon.ico'));
 }
 
@@ -650,6 +660,11 @@ function getLogo()
     if(getSetting('application_logo'))
     {
         return getSetting('application_logo');
+    }
+
+    if(getSetting('APP_LOGO'))
+    {
+        return getSetting('APP_LOGO');
     }
 
     return env('APP_LOGO', asset('theme/assets/images/favicon.ico'));

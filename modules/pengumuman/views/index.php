@@ -31,11 +31,11 @@
             </div>
           <div class="form-group mb-3">
               <label class="mb-2">NISN</label>
-            <input type="text" name="kode" class="form-control" placeholder="Masukan NISN Disini">
+            <input type="text" name="kode" class="form-control" placeholder="Masukan NISN Disini" required>
           </div>
           <div class="form-group mb-3">
           <label class="mb-2">Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" class="form-control" placeholder="Masukan Tanggal Lahir Disini">
+            <input type="date" name="tanggal_lahir" class="form-control" placeholder="Masukan Tanggal Lahir Disini" required>
           </div>
           <button class="w-100 btn btn-lg btn-primary rounded-pill" type="submit">Lihat Hasil Pengumuman</button>
         </form>

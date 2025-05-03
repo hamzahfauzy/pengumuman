@@ -2,7 +2,10 @@
 
 use Core\Database;
 use Core\Request;
-use PhpOffice\PhpWord\TemplateProcessor;
+use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Exception\ExceptionFormatter;
+// use PhpOffice\PhpWord\TemplateProcessor;
 
 $db = new Database;
 $periode = $db->single('peng_periode', [
@@ -19,49 +22,52 @@ if(Request::isMethod('POST'))
         'periode_id' => $periode->id
     ]);
 
-    $pdfFile = 'storage/'.$peserta->nama.'.pdf';
-
-    // if(file_exists($pdfFile))
-    // {
-    //     header('location:/'.$pdfFile);
-    //     die;
-    // }
-
-    $templateFile = getSetting('APP_TEMPLATE_SURAT');
-    $templateFile = str_replace(env('APP_URL') .'/', '', $templateFile);
-
-    $template = new TemplateProcessor($templateFile);
     $mapping = [
-        'nama' => $peserta->nama,
-        'kode' => $peserta->kode,
+        '{nama}' => $peserta->nama,
+        '{kode}' => $peserta->kode,
+        '{jurusan}' => $peserta->jurusan,
     ];
 
-    foreach ($mapping as $key => $value) {
-        $template->setValue($key, $value);
+    $template = getSetting('APP_TEXT_TEMPLATE');
+    foreach($mapping as $key => $value)
+    {
+        $template = str_replace($key, $value, $template);
     }
 
-    // Simpan sebagai Word sementara
-    $filePath = $peserta->kode;
-    $wordFile = '../storage/media/'.$filePath.'.docx';
-    $template->saveAs($wordFile);
-
-    \PhpOffice\PhpWord\Settings::setPdfRendererName(\PhpOffice\PhpWord\Settings::PDF_RENDERER_DOMPDF);
-    \PhpOffice\PhpWord\Settings::setPdfRendererPath('../vendor/dompdf/dompdf');
-
-    $reader = \PhpOffice\PhpWord\IOFactory::load($wordFile);
-    $writer = \PhpOffice\PhpWord\IOFactory::createWriter($reader, 'PDF');
+    $template = str_replace(env('APP_URL') .'/storage/', dirname(__FILE__) . '\..\..\..\storage\media\\', $template);
     
-    $pdfFile = '../storage/media/' . $filePath .' - '.$peserta->nama.'.pdf';
-    $writer->save($pdfFile);
+    $peserta->template_text = $template;
 
-    header("Content-type:application/pdf");
-    header('Content-Disposition: attachment; filename=' . $filePath .' - '.$peserta->nama.'.pdf');
-    readfile( $pdfFile );
-    die;
+    $kop = getSetting('APP_KOP_SURAT');
+    $kop = str_replace(env('APP_URL') .'/storage/', '', $kop);
+
+    $kop = dirname(__FILE__) . '\..\..\..\storage\media\\'.$kop;
+
+    $content = view('pengumuman/views/download-result', [
+        'periode' => $periode,
+        'peserta' => $peserta,
+        'kop' => $kop
+    ]);
+
+
+    try {
+        $filename = 'storage/'.$peserta->nama.'.pdf';
+        $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', array(0, 0, 0, 0));
+        $html2pdf->pdf->SetDisplayMode('fullpage');
+    
+        $html2pdf->writeHTML($content);
+        $html2pdf->output($filename, 'D');
+        // $html2pdf->output();
+    } catch (Html2PdfException $e) {
+        $html2pdf->clean();
+    
+        $formatter = new ExceptionFormatter($e);
+        echo $formatter->getHtmlMessage();
+    }
 
 }
 
-return view('pengumuman/views/' . ($peserta ? 'result' : 'not-found'), [
+return view('pengumuman/views/' . ($peserta ? 'download-result' : 'not-found'), [
     'periode' => $periode,
     'peserta' => $peserta
 ]);

@@ -98,7 +98,12 @@ class Form
                 $lists .= "<option value=''>- Pilih -</option>";
                 foreach($options as $option)
                 {
-                    $lists .= "<option value='".$option->id."' ".($option->id==$value?'selected=""':'').">".$option->value."</option>";
+                    $selected = $option->id==$vals;
+                    if(isset($attribute['multiple']) && is_array($vals))
+                    {
+                        $selected = in_array($option->id, $vals);
+                    }
+                    $lists .= "<option value='".$option->id."' ".($selected?'selected=""':'').">".$option->value."</option>";
                 }
             }
             else
@@ -108,13 +113,13 @@ class Form
                 {
                     $options = json_decode($options);
                     foreach($options as $key => $val)
-                        $lists .= "<option value='$val' ".($val==$value?'selected=""':'').">$key</option>";
+                        $lists .= "<option value='$val' ".($val==$vals?'selected=""':'').">$key</option>";
                 }
                 else
                 {
                     $options = explode('|',$options);
                     foreach($options as $option)
-                        $lists .= "<option value='$option' ".($option==$value?'selected=""':'').">$option</option>";
+                        $lists .= "<option value='$option' ".($option==$vals?'selected=""':'').">$option</option>";
                 }
             }
             

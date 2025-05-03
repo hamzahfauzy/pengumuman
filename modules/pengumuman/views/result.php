@@ -68,17 +68,21 @@
                     </a>
                 </div>
                 <div class="text-center w-100">
+                    <?php if($peserta->record_status == 'LULUS'): ?>
                     <form action="<?=routeTo('pengumuman/download-result')?>" method="post">
                         <?= csrf_field() ?>
                         <input type="hidden" name="kode" value="<?=$peserta->kode?>">
                         <input type="hidden" name="tanggal_lahir" value="<?=$peserta->tanggal_lahir?>">
+                        <?php endif ?>
                         <a href="<?=routeTo('/')?>" class="btn btn-warning px-5 mt-5" type="button">
                             Kembali
                         </a>
-                        <button class="btn btn-primary px-5 mt-5" type="submit">
-                            Download Surat
+                        <?php if($peserta->record_status == 'LULUS'): ?>
+                        <button class="btn btn-success px-5 mt-5" type="submit">
+                            Unduh Surat Keterangan
                         </button>
                     </form>
+                    <?php endif ?>
                 </div>
             </div>
         </div>

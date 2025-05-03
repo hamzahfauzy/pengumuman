@@ -53,12 +53,38 @@ Page::pushHead('<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist
 Page::pushHead('<script src="https://cdn.tiny.cloud/1/rsb9a1wqmvtlmij61ssaqj3ttq18xdwmyt7jg23sg1ion6kn/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>');
 Page::pushHead("<script>
 tinymce.init({
-  selector: 'textarea:not(.select2-search__field)',
-  relative_urls : false,
-  remove_script_host : false,
-  convert_urls : true,
-  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    selector: 'textarea:not(.select2-search__field)',
+    relative_urls : false,
+    remove_script_host : false,
+    convert_urls : true,
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    images_upload_url: '/default/media/upload',
+    automatic_uploads: true,
+    file_picker_types: 'image',
+    images_upload_handler: (blobInfo, progress) => {
+    return new Promise((resolve, reject) => {
+        let formData = new FormData();
+        formData.append('file', blobInfo.blob());
+        formData.append('_token', '".$_SESSION['token']."');
+
+        fetch('/default/media/upload', {
+        method: 'POST',
+        body: formData,
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.data.location) {
+                resolve(result.data.location); // Berhasil, URL gambar
+            } else {
+                reject('Error: Gambar gagal diupload.');
+            }
+        })
+        .catch(error => {
+            reject('Error: ' + error.message);
+        });
+    })
+  }
 });
 </script>");
 

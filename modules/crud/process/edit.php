@@ -64,10 +64,36 @@ Page::pushHead("<script>
 tinymce.init({
     selector: 'textarea:not(.select2-search__field)',
     relative_urls : false,
-  remove_script_host : false,
-  convert_urls : true,
-  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    remove_script_host : false,
+    convert_urls : true,
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    images_upload_url: '/default/media/upload',
+    automatic_uploads: true,
+    file_picker_types: 'image',
+    images_upload_handler: (blobInfo, progress) => {
+    return new Promise((resolve, reject) => {
+        let formData = new FormData();
+        formData.append('file', blobInfo.blob());
+        formData.append('_token', '".$_SESSION['token']."');
+
+        fetch('/default/media/upload', {
+        method: 'POST',
+        body: formData,
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.data.location) {
+                resolve(result.data.location); // Berhasil, URL gambar
+            } else {
+                reject('Error: Gambar gagal diupload.');
+            }
+        })
+        .catch(error => {
+            reject('Error: ' + error.message);
+        });
+    })
+  }
 });
 </script>");
 Page::pushHead('<style>.select2,.select2-selection{height:38px!important;}.select2-container--default .select2-selection--single .select2-selection__rendered{line-height:38px!important;}.select2-selection__arrow{height:34px!important;}</style>');
